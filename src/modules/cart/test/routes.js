@@ -437,8 +437,10 @@ describe('Cart CRUD routes tests', function () {
                     return done(err);
                 }
                 var resp = res.body;
+                console.log('ได้ดาต้าตัวแรก ' + resp.data.shop.shop_id)
+                console.log('------------------')
 
-                // mockup.u_id = "11998659866"
+                // mockup.shop.shop_id = "shop002"
                 request(app)
                     .post('/api/carts')
                     .set('Authorization', 'Bearer ' + token)
@@ -451,16 +453,16 @@ describe('Cart CRUD routes tests', function () {
                         var resp = res.body;
 
                         // mockup.u_id = "0992436806"
-                        request(app)
-                            .post('/api/carts')
-                            .set('Authorization', 'Bearer ' + token)
-                            .send(mockup)
-                            .expect(200)
-                            .end(function (err, res) {
-                                if (err) {
-                                    return done(err);
-                                }
-                                var resp = res.body;
+                        // request(app)
+                        //     .post('/api/carts')
+                        //     .set('Authorization', 'Bearer ' + token)
+                        //     .send(mockup)
+                        //     .expect(200)
+                        //     .end(function (err, res) {
+                                // if (err) {
+                                //     return done(err);
+                                // }
+                                // var resp = res.body;
 
                                 request(app)
                                     .get('/api/carts')
@@ -471,11 +473,11 @@ describe('Cart CRUD routes tests', function () {
                                             return done(err);
                                         }
                                         var resp = res.body;
-                                        console.log(resp.data.length)
+                                        console.log('จำนวน length ดาต้า ' + resp.data.length)
                                         // console.log(resp.data)
                                         done();
                                     })
-                            });
+                            // });
                     });
             });
             
