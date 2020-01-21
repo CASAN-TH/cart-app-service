@@ -5,6 +5,9 @@ var Schema = mongoose.Schema;
 
 
 var CartSchema = new Schema({
+    u_id: {
+        type: String
+    },
     shop: {
         type: {
             shop_id: {

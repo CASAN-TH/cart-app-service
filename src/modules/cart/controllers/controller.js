@@ -31,6 +31,21 @@ exports.getList = function (req, res) {
     });
 };
 
+exports.findByUser = function (req, res, next) {
+    // console.log(req.user.username)
+    Cart.find({ u_id: req.user.username }, function (err, data) {
+        if (data.length < 1) {
+            next();
+        } else {
+            // console.log('ข้อมูลเตรียมเซฟ')
+            // console.log(req.body.shop.shop_id)
+            // console.log('ข้อมูลในที่เซฟในดาต้าเบสแล้ว')
+            // console.log(data)
+            next();
+        }
+    });
+};
+
 exports.create = function (req, res) {
     var newCart = new Cart(req.body);
     newCart.createby = req.user;
@@ -74,14 +89,6 @@ exports.getByID = function (req, res, next, id) {
         };
     });
 };
-
-exports.findByUser = function (req, res, next) {
-    // console.log(req.user.username)
-    // Cart.find(function (err, data) {
-    //     console.log(data)
-    // })
-    next();
-}
 
 exports.read = function (req, res) {
     res.jsonp({

@@ -16,6 +16,7 @@ describe('Cart CRUD routes tests', function () {
 
     before(function (done) {
         mockup = {
+            "u_id": "0992436806",
             "shop": {
                 "shop_id": "shop001",
                 "shop_name": "shopTest",
@@ -421,6 +422,63 @@ describe('Cart CRUD routes tests', function () {
                     });
             });
 
+    });
+
+    it('should be cart post 1 shop add product', function (done) {
+        console.log('start here')
+
+        request(app)
+            .post('/api/carts')
+            .set('Authorization', 'Bearer ' + token)
+            .send(mockup)
+            .expect(200)
+            .end(function (err, res) {
+                if (err) {
+                    return done(err);
+                }
+                var resp = res.body;
+
+                // mockup.u_id = "11998659866"
+                request(app)
+                    .post('/api/carts')
+                    .set('Authorization', 'Bearer ' + token)
+                    .send(mockup)
+                    .expect(200)
+                    .end(function (err, res) {
+                        if (err) {
+                            return done(err);
+                        }
+                        var resp = res.body;
+
+                        // mockup.u_id = "0992436806"
+                        request(app)
+                            .post('/api/carts')
+                            .set('Authorization', 'Bearer ' + token)
+                            .send(mockup)
+                            .expect(200)
+                            .end(function (err, res) {
+                                if (err) {
+                                    return done(err);
+                                }
+                                var resp = res.body;
+
+                                request(app)
+                                    .get('/api/carts')
+                                    .set('Authorization', 'Bearer ' + token)
+                                    .expect(200)
+                                    .end(function (err, res) {
+                                        if (err) {
+                                            return done(err);
+                                        }
+                                        var resp = res.body;
+                                        console.log(resp.data.length)
+                                        // console.log(resp.data)
+                                        done();
+                                    })
+                            });
+                    });
+            });
+            
     });
 
     afterEach(function (done) {
