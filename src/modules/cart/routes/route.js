@@ -14,6 +14,12 @@ module.exports = function (app) {
         .put(controller.update)
         .delete(controller.delete);
 
+    app.route('/api/cartsbyuser')
+        .get(
+            controller.findByUser,
+            controller.read
+        )
+
     app.param('cartId', controller.getByID);
 
     /**

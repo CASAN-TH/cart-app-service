@@ -70,7 +70,7 @@ describe('Cart CRUD routes tests', function () {
             ]
         };
         credentials = {
-            username: 'username',
+            username: '0992436806',
             password: 'password',
             firstname: 'first name',
             lastname: 'last name',
@@ -368,6 +368,57 @@ describe('Cart CRUD routes tests', function () {
                         message: 'User is not authorized'
                     })
                     .end(done);
+            });
+
+    });
+
+    xit('should be cart get by user', function (done) {
+
+        request(app)
+            .post('/api/carts')
+            .set('Authorization', 'Bearer ' + token)
+            .send(mockup)
+            .expect(200)
+            .end(function (err, res) {
+                if (err) {
+                    return done(err);
+                }
+                var resp = res.body;
+
+                credentials = {
+                    username: '7116895698',
+                    password: 'password',
+                    firstname: 'first name',
+                    lastname: 'last name',
+                    email: 'test@email.com',
+                    roles: ['user']
+                };
+                token = jwt.sign(_.omit(credentials, 'password'), config.jwt.secret, {
+                    expiresIn: 2 * 60 * 60 * 1000
+                });
+                request(app)
+                    .post('/api/carts')
+                    .set('Authorization', 'Bearer ' + token)
+                    .send(mockup)
+                    .expect(200)
+                    .end(function (err, res) {
+                        if (err) {
+                            return done(err);
+                        }
+                        var resp = res.body;
+
+                        request(app)
+                            .get('/api/cartsbyuser')
+                            .set('Authorization', 'Bearer ' + token)
+                            .expect(200)
+                            .end(function (err, res) {
+                                if (err) {
+                                    return done(err);
+                                }
+                                var resp = res.body;
+                                done();
+                            })
+                    });
             });
 
     });

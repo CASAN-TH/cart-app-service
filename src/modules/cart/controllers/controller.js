@@ -75,6 +75,14 @@ exports.getByID = function (req, res, next, id) {
     });
 };
 
+exports.findByUser = function (req, res, next) {
+    // console.log(req.user.username)
+    // Cart.find(function (err, data) {
+    //     console.log(data)
+    // })
+    next();
+}
+
 exports.read = function (req, res) {
     res.jsonp({
         status: 200,
