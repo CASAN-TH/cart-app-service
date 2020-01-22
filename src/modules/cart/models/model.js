@@ -39,7 +39,8 @@ var CartSchema = new Schema({
                     enum: ['waitpayment', 'waitshipping', 'waitreceive', 'waitreview'],
                     default: 'waitpayment'
                 },
-                options: [String],
+                option1: String,
+                option2: String,
                 sale_price_percentage: Number,
                 sale_avaliable: {
                     type: Boolean

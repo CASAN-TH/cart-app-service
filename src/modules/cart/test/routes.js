@@ -25,10 +25,11 @@ describe('Cart CRUD routes tests', function () {
             "items": [
                 {
                     "product_id": "Product001",
-                    "sku": 'sku',
+                    "sku": "sku",
                     "images": ["https://res.cloudinary.com/hml20oe33/image/upload/v1576751856/catalog/2_pfwgiy.jpg"],
-                    "name": 'Vivo v13 Pro Crystal Sky RAM 8 GB ROM 128 GB',
-                    "options": ['green', '32GB'],
+                    "name": "Vivo v13 Pro Crystal Sky RAM 8 GB ROM 128 GB",
+                    "option1": "green",
+                    "option2": "32GB",
                     "sale_price_percentage": 50,
                     "sale_avaliable": true,
                     "sale_price": {
@@ -127,8 +128,8 @@ describe('Cart CRUD routes tests', function () {
                         assert.equal(resp.data.items[0].sku, mockup.items[0].sku);
                         assert.equal(resp.data.items[0].images[0], mockup.items[0].images[0]);
                         assert.equal(resp.data.items[0].name, mockup.items[0].name);
-                        assert.equal(resp.data.items[0].options[0], mockup.items[0].options[0]);
-                        assert.equal(resp.data.items[0].options[1], mockup.items[0].options[1]);
+                        assert.equal(resp.data.items[0].option1, mockup.items[0].option1);
+                        assert.equal(resp.data.items[0].option2, mockup.items[0].option2);
                         assert.equal(resp.data.items[0].sale_price_percentage, mockup.items[0].sale_price_percentage);
                         assert.equal(resp.data.items[0].sale_avaliable, mockup.items[0].sale_avaliable);
                         assert.equal(resp.data.items[0].sale_price.price, mockup.items[0].sale_price.price);
@@ -177,8 +178,8 @@ describe('Cart CRUD routes tests', function () {
                 assert.equal(resp.data.items[0].sku, mockup.items[0].sku);
                 assert.equal(resp.data.items[0].images[0], mockup.items[0].images[0]);
                 assert.equal(resp.data.items[0].name, mockup.items[0].name);
-                assert.equal(resp.data.items[0].options[0], mockup.items[0].options[0]);
-                assert.equal(resp.data.items[0].options[1], mockup.items[0].options[1]);
+                assert.equal(resp.data.items[0].option1, mockup.items[0].option1);
+                assert.equal(resp.data.items[0].option2, mockup.items[0].option2);
                 assert.equal(resp.data.items[0].sale_price_percentage, mockup.items[0].sale_price_percentage);
                 assert.equal(resp.data.items[0].sale_avaliable, mockup.items[0].sale_avaliable);
                 assert.equal(resp.data.items[0].sale_price.price, mockup.items[0].sale_price.price);
@@ -243,8 +244,8 @@ describe('Cart CRUD routes tests', function () {
                         assert.equal(resp.data.items[0].sku, mockup.items[0].sku);
                         assert.equal(resp.data.items[0].images[0], mockup.items[0].images[0]);
                         assert.equal(resp.data.items[0].name, mockup.items[0].name);
-                        assert.equal(resp.data.items[0].options[0], mockup.items[0].options[0]);
-                        assert.equal(resp.data.items[0].options[1], mockup.items[0].options[1]);
+                        assert.equal(resp.data.items[0].option1, mockup.items[0].option1);
+                        assert.equal(resp.data.items[0].option2, mockup.items[0].option2);
                         assert.equal(resp.data.items[0].sale_price_percentage, mockup.items[0].sale_price_percentage);
                         assert.equal(resp.data.items[0].sale_avaliable, mockup.items[0].sale_avaliable);
                         assert.equal(resp.data.items[0].sale_price.price, mockup.items[0].sale_price.price);
@@ -440,7 +441,7 @@ describe('Cart CRUD routes tests', function () {
                 console.log('ได้ดาต้าตัวแรก ' + resp.data.shop.shop_id)
                 console.log('------------------')
 
-                // mockup.shop.shop_id = "shop002"
+                // mockup.items[0].product_id = "product003"
                 request(app)
                     .post('/api/carts')
                     .set('Authorization', 'Bearer ' + token)
@@ -459,28 +460,28 @@ describe('Cart CRUD routes tests', function () {
                         //     .send(mockup)
                         //     .expect(200)
                         //     .end(function (err, res) {
-                                // if (err) {
-                                //     return done(err);
-                                // }
-                                // var resp = res.body;
+                        // if (err) {
+                        //     return done(err);
+                        // }
+                        // var resp = res.body;
 
-                                request(app)
-                                    .get('/api/carts')
-                                    .set('Authorization', 'Bearer ' + token)
-                                    .expect(200)
-                                    .end(function (err, res) {
-                                        if (err) {
-                                            return done(err);
-                                        }
-                                        var resp = res.body;
-                                        console.log('จำนวน length ดาต้า ' + resp.data.length)
-                                        // console.log(resp.data)
-                                        done();
-                                    })
-                            // });
+                        request(app)
+                            .get('/api/carts')
+                            .set('Authorization', 'Bearer ' + token)
+                            .expect(200)
+                            .end(function (err, res) {
+                                if (err) {
+                                    return done(err);
+                                }
+                                var resp = res.body;
+                                console.log('จำนวน length ดาต้า ' + resp.data.length)
+                                // console.log(resp.data)
+                                done();
+                            })
+                        // });
                     });
             });
-            
+
     });
 
     afterEach(function (done) {

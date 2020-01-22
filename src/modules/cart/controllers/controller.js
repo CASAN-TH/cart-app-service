@@ -47,23 +47,32 @@ exports.findByUser = function (req, res, next) {
             });
 
             if (shopIdx >= 0) {
-                console.log('shop already')
+                console.log('มี shop แล้ว');
 
-                var itemIdx = datas[shopIdx].items.findIndex(el => {
-                    return el.product_id === req.body.items[0].product_id
-                })
-                console.log(itemIdx)
-                next();
+                console.log('...เริ่ม filter items')
+                var filterProducts = datas[shopIdx].items.filter((item) => {
+                    return item.product_id === req.body.items[0].product_id
+                });
+                console.log('ได้ข้อมูล [] ที่ แมทกับ product_id');
+                if (filterProducts.length > 0) {
+                    console.log('มี product_id แล้ว');
+                    // เช็ค option ต่อ
+                    console.log(filterProducts)
+                    // filterProducts.options
+                    next();
+                } else {
+                    console.log('ยังไม่มี product_id');
+                    // push item เข้า data แล้ว next
+                    datas[shopIdx].items.push(req.body.items[0]);
+                    req.body = datas[shopIdx];
+                    next();
+                };
+
             } else {
-                console.log('shop not ready')
+                console.log('ยังไม่มี shop')
                 next();
             };
-
-
-            // console.log('---------------ข้อมูลเตรียม Next-----------------')
-            // console.log(req.body)
-            // next();
-        }
+        };
     });
 };
 
