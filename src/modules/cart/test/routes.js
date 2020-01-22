@@ -425,8 +425,7 @@ describe('Cart CRUD routes tests', function () {
 
     });
 
-    it('should be cart post 1 shop add product', function (done) {
-        console.log('start here')
+    it('should be cart post same shop and add amount only', function (done) {
 
         request(app)
             .post('/api/carts')
@@ -438,10 +437,7 @@ describe('Cart CRUD routes tests', function () {
                     return done(err);
                 }
                 var resp = res.body;
-                console.log('ได้ดาต้าตัวแรก ' + resp.data.shop.shop_id)
-                console.log('------------------')
 
-                // mockup.items[0].product_id = "product003"
                 request(app)
                     .post('/api/carts')
                     .set('Authorization', 'Bearer ' + token)
@@ -453,35 +449,216 @@ describe('Cart CRUD routes tests', function () {
                         }
                         var resp = res.body;
 
-                        // mockup.u_id = "0992436806"
-                        // request(app)
-                        //     .post('/api/carts')
-                        //     .set('Authorization', 'Bearer ' + token)
-                        //     .send(mockup)
-                        //     .expect(200)
-                        //     .end(function (err, res) {
-                        // if (err) {
-                        //     return done(err);
-                        // }
-                        // var resp = res.body;
-
                         request(app)
-                            .get('/api/carts')
+                            .post('/api/carts')
                             .set('Authorization', 'Bearer ' + token)
+                            .send(mockup)
                             .expect(200)
                             .end(function (err, res) {
                                 if (err) {
                                     return done(err);
                                 }
                                 var resp = res.body;
-                                console.log('จำนวน length ดาต้า ' + resp.data.length)
-                                // console.log(resp.data)
-                                done();
-                            })
-                        // });
+
+                                request(app)
+                                    .get('/api/carts')
+                                    .set('Authorization', 'Bearer ' + token)
+                                    .expect(200)
+                                    .end(function (err, res) {
+                                        if (err) {
+                                            return done(err);
+                                        }
+                                        var resp = res.body;
+                                        assert.equal(resp.data[0].shop.shop_id, mockup.shop.shop_id);
+                                        assert.equal(resp.data[0].shop.shop_name, mockup.shop.shop_name);
+                                        assert.equal(resp.data[0].shop.shop_image, mockup.shop.shop_image);
+                                        assert.equal(resp.data[0].items[0].product_id, mockup.items[0].product_id);
+                                        assert.equal(resp.data[0].items[0].sku, mockup.items[0].sku);
+                                        assert.equal(resp.data[0].items[0].images[0], mockup.items[0].images[0]);
+                                        assert.equal(resp.data[0].items[0].name, mockup.items[0].name);
+                                        assert.equal(resp.data[0].items[0].option1, mockup.items[0].option1);
+                                        assert.equal(resp.data[0].items[0].option2, mockup.items[0].option2);
+                                        assert.equal(resp.data[0].items[0].sale_price_percentage, mockup.items[0].sale_price_percentage);
+                                        assert.equal(resp.data[0].items[0].sale_avaliable, mockup.items[0].sale_avaliable);
+                                        assert.equal(resp.data[0].items[0].sale_price.price, mockup.items[0].sale_price.price);
+                                        assert.equal(resp.data[0].items[0].sale_price.currency, mockup.items[0].sale_price.currency);
+                                        assert.equal(resp.data[0].items[0].sale_price_text, mockup.items[0].sale_price_text);
+                                        assert.equal(resp.data[0].items[0].regular_price.price, mockup.items[0].regular_price.price);
+                                        assert.equal(resp.data[0].items[0].regular_price.currency, mockup.items[0].regular_price.currency);
+                                        assert.equal(resp.data[0].items[0].regular_price_text, mockup.items[0].regular_price_text);
+                                        assert.equal(resp.data[0].items[0].down_payment.price, mockup.items[0].down_payment.price);
+                                        assert.equal(resp.data[0].items[0].down_payment.currency, mockup.items[0].down_payment.currency);
+                                        assert.equal(resp.data[0].items[0].down_payment_text, mockup.items[0].down_payment_text);
+                                        assert.equal(resp.data[0].items[0].installment.price, mockup.items[0].installment.price);
+                                        assert.equal(resp.data[0].items[0].installment.period, mockup.items[0].installment.period);
+                                        assert.equal(resp.data[0].items[0].installment.currency, mockup.items[0].installment.currency);
+                                        assert.equal(resp.data[0].items[0].installment_price_text, mockup.items[0].installment_price_text);
+                                        assert.equal(resp.data[0].items[0].amount_product, 6);
+                                        assert.equal(resp.data[0].items[0].shipping.shipping_name, mockup.items[0].shipping.shipping_name);
+                                        assert.equal(resp.data[0].items[0].shipping.shipping_fee, mockup.items[0].shipping.shipping_fee);
+                                        assert.equal(resp.data[0].items[0].shipping.shipping_currency, mockup.items[0].shipping.shipping_currency);
+                                        assert.equal(resp.data[0].items[0].promotions.gift_type, mockup.items[0].promotions.gift_type);
+                                        assert.equal(resp.data[0].items[0].promotions.gift_name, mockup.items[0].promotions.gift_name);
+                                        assert.equal(resp.data[0].items[0].promotions.gift_amount, mockup.items[0].promotions.gift_amount);
+                                        assert.equal(resp.data[0].items[0].down_payment_lists.length, mockup.items[0].down_payment_lists.length);
+                                        assert.equal(resp.data[0].items[0].periods_lists.length, mockup.items[0].periods_lists.length);
+                                        done();
+                                    })
+                            });
                     });
             });
+    });
 
+    it('should be cart post new shop and add product', function (done) {
+
+        request(app)
+            .post('/api/carts')
+            .set('Authorization', 'Bearer ' + token)
+            .send(mockup)
+            .expect(200)
+            .end(function (err, res) {
+                if (err) {
+                    return done(err);
+                }
+                var resp = res.body;
+
+                mockup.shop.shop_id = "shop002"
+                request(app)
+                    .post('/api/carts')
+                    .set('Authorization', 'Bearer ' + token)
+                    .send(mockup)
+                    .expect(200)
+                    .end(function (err, res) {
+                        if (err) {
+                            return done(err);
+                        }
+                        var resp = res.body;
+
+                        mockup.items[0].product_id = "Product003"
+                        mockup.items[0].option1 = "yellow"
+                        request(app)
+                            .post('/api/carts')
+                            .set('Authorization', 'Bearer ' + token)
+                            .send(mockup)
+                            .expect(200)
+                            .end(function (err, res) {
+                                if (err) {
+                                    return done(err);
+                                }
+                                var resp = res.body;
+
+                                request(app)
+                                    .get('/api/carts')
+                                    .set('Authorization', 'Bearer ' + token)
+                                    .expect(200)
+                                    .end(function (err, res) {
+                                        if (err) {
+                                            return done(err);
+                                        }
+                                        var resp = res.body;
+                                        assert.equal(resp.data[0].shop.shop_id, "shop001");
+                                        assert.equal(resp.data[0].shop.shop_name, mockup.shop.shop_name);
+                                        assert.equal(resp.data[0].shop.shop_image, mockup.shop.shop_image);
+                                        assert.equal(resp.data[0].items[0].product_id, "Product001");
+                                        assert.equal(resp.data[0].items[0].sku, mockup.items[0].sku);
+                                        assert.equal(resp.data[0].items[0].images[0], mockup.items[0].images[0]);
+                                        assert.equal(resp.data[0].items[0].name, mockup.items[0].name);
+                                        assert.equal(resp.data[0].items[0].option1, "green");
+                                        assert.equal(resp.data[0].items[0].option2, mockup.items[0].option2);
+                                        assert.equal(resp.data[0].items[0].sale_price_percentage, mockup.items[0].sale_price_percentage);
+                                        assert.equal(resp.data[0].items[0].sale_avaliable, mockup.items[0].sale_avaliable);
+                                        assert.equal(resp.data[0].items[0].sale_price.price, mockup.items[0].sale_price.price);
+                                        assert.equal(resp.data[0].items[0].sale_price.currency, mockup.items[0].sale_price.currency);
+                                        assert.equal(resp.data[0].items[0].sale_price_text, mockup.items[0].sale_price_text);
+                                        assert.equal(resp.data[0].items[0].regular_price.price, mockup.items[0].regular_price.price);
+                                        assert.equal(resp.data[0].items[0].regular_price.currency, mockup.items[0].regular_price.currency);
+                                        assert.equal(resp.data[0].items[0].regular_price_text, mockup.items[0].regular_price_text);
+                                        assert.equal(resp.data[0].items[0].down_payment.price, mockup.items[0].down_payment.price);
+                                        assert.equal(resp.data[0].items[0].down_payment.currency, mockup.items[0].down_payment.currency);
+                                        assert.equal(resp.data[0].items[0].down_payment_text, mockup.items[0].down_payment_text);
+                                        assert.equal(resp.data[0].items[0].installment.price, mockup.items[0].installment.price);
+                                        assert.equal(resp.data[0].items[0].installment.period, mockup.items[0].installment.period);
+                                        assert.equal(resp.data[0].items[0].installment.currency, mockup.items[0].installment.currency);
+                                        assert.equal(resp.data[0].items[0].installment_price_text, mockup.items[0].installment_price_text);
+                                        assert.equal(resp.data[0].items[0].amount_product, mockup.items[0].amount_product);
+                                        assert.equal(resp.data[0].items[0].shipping.shipping_name, mockup.items[0].shipping.shipping_name);
+                                        assert.equal(resp.data[0].items[0].shipping.shipping_fee, mockup.items[0].shipping.shipping_fee);
+                                        assert.equal(resp.data[0].items[0].shipping.shipping_currency, mockup.items[0].shipping.shipping_currency);
+                                        assert.equal(resp.data[0].items[0].promotions.gift_type, mockup.items[0].promotions.gift_type);
+                                        assert.equal(resp.data[0].items[0].promotions.gift_name, mockup.items[0].promotions.gift_name);
+                                        assert.equal(resp.data[0].items[0].promotions.gift_amount, mockup.items[0].promotions.gift_amount);
+                                        assert.equal(resp.data[0].items[0].down_payment_lists.length, mockup.items[0].down_payment_lists.length);
+                                        assert.equal(resp.data[0].items[0].periods_lists.length, mockup.items[0].periods_lists.length);
+
+                                        assert.equal(resp.data[1].shop.shop_id, mockup.shop.shop_id);
+                                        assert.equal(resp.data[1].shop.shop_name, mockup.shop.shop_name);
+                                        assert.equal(resp.data[1].shop.shop_image, mockup.shop.shop_image);
+                                        assert.equal(resp.data[1].items[0].product_id, "Product001");
+                                        assert.equal(resp.data[1].items[0].sku, mockup.items[0].sku);
+                                        assert.equal(resp.data[1].items[0].images[0], mockup.items[0].images[0]);
+                                        assert.equal(resp.data[1].items[0].name, mockup.items[0].name);
+                                        assert.equal(resp.data[1].items[0].option1, "green");
+                                        assert.equal(resp.data[1].items[0].option2, mockup.items[0].option2);
+                                        assert.equal(resp.data[1].items[0].sale_price_percentage, mockup.items[0].sale_price_percentage);
+                                        assert.equal(resp.data[1].items[0].sale_avaliable, mockup.items[0].sale_avaliable);
+                                        assert.equal(resp.data[1].items[0].sale_price.price, mockup.items[0].sale_price.price);
+                                        assert.equal(resp.data[1].items[0].sale_price.currency, mockup.items[0].sale_price.currency);
+                                        assert.equal(resp.data[1].items[0].sale_price_text, mockup.items[0].sale_price_text);
+                                        assert.equal(resp.data[1].items[0].regular_price.price, mockup.items[0].regular_price.price);
+                                        assert.equal(resp.data[1].items[0].regular_price.currency, mockup.items[0].regular_price.currency);
+                                        assert.equal(resp.data[1].items[0].regular_price_text, mockup.items[0].regular_price_text);
+                                        assert.equal(resp.data[1].items[0].down_payment.price, mockup.items[0].down_payment.price);
+                                        assert.equal(resp.data[1].items[0].down_payment.currency, mockup.items[0].down_payment.currency);
+                                        assert.equal(resp.data[1].items[0].down_payment_text, mockup.items[0].down_payment_text);
+                                        assert.equal(resp.data[1].items[0].installment.price, mockup.items[0].installment.price);
+                                        assert.equal(resp.data[1].items[0].installment.period, mockup.items[0].installment.period);
+                                        assert.equal(resp.data[1].items[0].installment.currency, mockup.items[0].installment.currency);
+                                        assert.equal(resp.data[1].items[0].installment_price_text, mockup.items[0].installment_price_text);
+                                        assert.equal(resp.data[1].items[0].amount_product, mockup.items[0].amount_product);
+                                        assert.equal(resp.data[1].items[0].shipping.shipping_name, mockup.items[0].shipping.shipping_name);
+                                        assert.equal(resp.data[1].items[0].shipping.shipping_fee, mockup.items[0].shipping.shipping_fee);
+                                        assert.equal(resp.data[1].items[0].shipping.shipping_currency, mockup.items[0].shipping.shipping_currency);
+                                        assert.equal(resp.data[1].items[0].promotions.gift_type, mockup.items[0].promotions.gift_type);
+                                        assert.equal(resp.data[1].items[0].promotions.gift_name, mockup.items[0].promotions.gift_name);
+                                        assert.equal(resp.data[1].items[0].promotions.gift_amount, mockup.items[0].promotions.gift_amount);
+                                        assert.equal(resp.data[1].items[0].down_payment_lists.length, mockup.items[0].down_payment_lists.length);
+                                        assert.equal(resp.data[1].items[0].periods_lists.length, mockup.items[0].periods_lists.length);
+
+                                        assert.equal(resp.data[1].items[1].product_id, mockup.items[0].product_id);
+                                        assert.equal(resp.data[1].items[1].sku, mockup.items[0].sku);
+                                        assert.equal(resp.data[1].items[1].images[0], mockup.items[0].images[0]);
+                                        assert.equal(resp.data[1].items[1].name, mockup.items[0].name);
+                                        assert.equal(resp.data[1].items[1].option1, mockup.items[0].option1);
+                                        assert.equal(resp.data[1].items[1].option2, mockup.items[0].option2);
+                                        assert.equal(resp.data[1].items[1].sale_price_percentage, mockup.items[0].sale_price_percentage);
+                                        assert.equal(resp.data[1].items[1].sale_avaliable, mockup.items[0].sale_avaliable);
+                                        assert.equal(resp.data[1].items[1].sale_price.price, mockup.items[0].sale_price.price);
+                                        assert.equal(resp.data[1].items[1].sale_price.currency, mockup.items[0].sale_price.currency);
+                                        assert.equal(resp.data[1].items[1].sale_price_text, mockup.items[0].sale_price_text);
+                                        assert.equal(resp.data[1].items[1].regular_price.price, mockup.items[0].regular_price.price);
+                                        assert.equal(resp.data[1].items[1].regular_price.currency, mockup.items[0].regular_price.currency);
+                                        assert.equal(resp.data[1].items[1].regular_price_text, mockup.items[0].regular_price_text);
+                                        assert.equal(resp.data[1].items[1].down_payment.price, mockup.items[0].down_payment.price);
+                                        assert.equal(resp.data[1].items[1].down_payment.currency, mockup.items[0].down_payment.currency);
+                                        assert.equal(resp.data[1].items[1].down_payment_text, mockup.items[0].down_payment_text);
+                                        assert.equal(resp.data[1].items[1].installment.price, mockup.items[0].installment.price);
+                                        assert.equal(resp.data[1].items[1].installment.period, mockup.items[0].installment.period);
+                                        assert.equal(resp.data[1].items[1].installment.currency, mockup.items[0].installment.currency);
+                                        assert.equal(resp.data[1].items[1].installment_price_text, mockup.items[0].installment_price_text);
+                                        assert.equal(resp.data[1].items[1].amount_product, mockup.items[0].amount_product);
+                                        assert.equal(resp.data[1].items[1].shipping.shipping_name, mockup.items[0].shipping.shipping_name);
+                                        assert.equal(resp.data[1].items[1].shipping.shipping_fee, mockup.items[0].shipping.shipping_fee);
+                                        assert.equal(resp.data[1].items[1].shipping.shipping_currency, mockup.items[0].shipping.shipping_currency);
+                                        assert.equal(resp.data[1].items[1].promotions.gift_type, mockup.items[0].promotions.gift_type);
+                                        assert.equal(resp.data[1].items[1].promotions.gift_name, mockup.items[0].promotions.gift_name);
+                                        assert.equal(resp.data[1].items[1].promotions.gift_amount, mockup.items[0].promotions.gift_amount);
+                                        assert.equal(resp.data[1].items[1].down_payment_lists.length, mockup.items[0].down_payment_lists.length);
+                                        assert.equal(resp.data[1].items[1].periods_lists.length, mockup.items[0].periods_lists.length);
+                                        done();
+                                    });
+                            });
+                    });
+            });
     });
 
     afterEach(function (done) {

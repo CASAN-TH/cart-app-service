@@ -31,7 +31,7 @@ exports.getList = function (req, res) {
     });
 };
 
-exports.findByUser = function (req, res, next) {
+exports.mixData = function (req, res, next) {
 
     Cart.find({ u_id: req.user.username }, function (err, datas) {
         if (datas.length < 1) {
@@ -40,36 +40,33 @@ exports.findByUser = function (req, res, next) {
             next();
         } else {
             // จำนวนข้อมูลตั้งแต่ 1 ขึ้นไป
-            console.log('*ข้อมูล req.body = ' + req.body.shop.shop_id);
-
+            // console.log('*ข้อมูล req.body = ' + req.body.shop.shop_id);
+            // เช็ค ว่ามี shop รึยัง
             var shopIdx = datas.findIndex(el => {
                 return el.shop.shop_id === req.body.shop.shop_id
             });
 
             if (shopIdx >= 0) {
-                console.log('มี shop แล้ว');
+                // console.log('มี shop แล้ว');
+                // เช็คว่ามี product รึยัง
+                var itemIdx = datas[shopIdx].items.findIndex(el => {
+                    return el.product_id === req.body.items[0].product_id && el.option1 === req.body.items[0].option1 && el.option2 === req.body.items[0].option2
+                })
 
-                console.log('...เริ่ม filter items')
-                var filterProducts = datas[shopIdx].items.filter((item) => {
-                    return item.product_id === req.body.items[0].product_id
-                });
-                console.log('ได้ข้อมูล [] ที่ แมทกับ product_id');
-                if (filterProducts.length > 0) {
-                    console.log('มี product_id แล้ว');
-                    // เช็ค option ต่อ
-                    console.log(filterProducts)
-                    // filterProducts.options
+                if (itemIdx >= 0) {
+                    // console.log('มี product แล้ว ทำการเพิ่ม amount_product');
+                    datas[shopIdx].items[itemIdx].amount_product += req.body.items[0].amount_product;
+                    req.body = datas[shopIdx];
                     next();
                 } else {
-                    console.log('ยังไม่มี product_id');
-                    // push item เข้า data แล้ว next
+                    // console.log('ไม่มี product ทำการเพิ่ม item');
                     datas[shopIdx].items.push(req.body.items[0]);
                     req.body = datas[shopIdx];
                     next();
-                };
+                }
 
             } else {
-                console.log('ยังไม่มี shop')
+                // console.log('ยังไม่มี shop')
                 next();
             };
         };

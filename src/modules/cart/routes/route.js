@@ -8,7 +8,7 @@ module.exports = function (app) {
     app.route(url).all(policy.isAllowed)
         .get(controller.getList)
         .post(
-            controller.findByUser,
+            controller.mixData,
             controller.create
             );
 
@@ -19,7 +19,7 @@ module.exports = function (app) {
 
     app.route('/api/cartsbyuser')
         .get(
-            controller.findByUser,
+            // controller.findByUser,
             controller.read
         )
 
