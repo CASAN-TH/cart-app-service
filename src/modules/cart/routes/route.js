@@ -19,7 +19,7 @@ module.exports = function (app) {
 
     app.route('/api/cartsbyuser')
         .get(
-            // controller.findByUser,
+            controller.findByUser,
             controller.read
         )
 

@@ -117,6 +117,13 @@ exports.getByID = function (req, res, next, id) {
     });
 };
 
+exports.findByUser = function (req, res, next) {
+    Cart.find({ u_id: req.user.username }, function (err, datas) {
+        req.data = datas;
+        next();
+    });
+};
+
 exports.read = function (req, res) {
     res.jsonp({
         status: 200,
