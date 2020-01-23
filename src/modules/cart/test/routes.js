@@ -562,7 +562,7 @@ describe('Cart CRUD routes tests', function () {
                                 var resp = res.body;
 
                                 request(app)
-                                    .get('/api/carts')
+                                    .get('/api/cartsbyuser')
                                     .set('Authorization', 'Bearer ' + token)
                                     .expect(200)
                                     .end(function (err, res) {
@@ -649,7 +649,7 @@ describe('Cart CRUD routes tests', function () {
                                 var resp = res.body;
 
                                 request(app)
-                                    .get('/api/carts')
+                                    .get('/api/cartsbyuser')
                                     .set('Authorization', 'Bearer ' + token)
                                     .expect(200)
                                     .end(function (err, res) {
