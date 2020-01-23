@@ -148,55 +148,6 @@ var CartSchema = new Schema({
             }
         ]
     },
-    totalcart: {
-        type: {
-            total_regularprice: {
-                type: Number
-            },
-            total_regularprice_text: {
-                type: String
-            },
-            total_saleprice: {
-                type: Number
-            },
-            total_saleprice_text: {
-                type: String
-            },
-            currency: {
-                type: String
-            },
-            installment_price: {
-                type: Number
-            },
-            installment_price_text: {
-                type: String
-            },
-            installment_period: {
-                type: Number
-            },
-            amount_product: {
-                type: Number
-            },
-            promotion_price: {
-                type: Number
-            },
-            promotion_price_text: {
-                type: String
-            },
-            shippingfee_price: {
-                type: Number
-            },
-            shippingfee_price_text: {
-                type: String
-            },
-            coupon_price: {
-                type: Number
-            },
-            coupon_price_text: {
-                type: String
-            }
-        }
-    },
     created: {
         type: Date,
         default: Date.now

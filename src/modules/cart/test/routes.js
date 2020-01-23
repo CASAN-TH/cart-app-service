@@ -70,24 +70,6 @@ describe('Cart CRUD routes tests', function () {
                     "periods_lists": [3, 6, 9, 12, 18]
                 }
             ]
-            // ,
-            // "totalcart": {
-            //     "total_regularprice": 10000,
-            //     "total_regularprice_text": "฿10,000",
-            //     "total_saleprice": 5000,
-            //     "total_saleprice_text": "฿5,000",
-            //     "currency": "฿",
-            //     "installment_price": 500,
-            //     "installment_price_text": "฿500",
-            //     "installment_period": 10,
-            //     "amount_product": 1,
-            //     "promotion_price": 0,
-            //     "promotion_price_text": "฿0",
-            //     "shippingfee_price": 30,
-            //     "shippingfee_price_text": "฿30",
-            //     "coupon_price": 0,
-            //     "coupon_price_text": "฿0"
-            // }
         };
         credentials = {
             username: '0992436806',
