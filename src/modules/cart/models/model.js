@@ -8,6 +8,10 @@ var CartSchema = new Schema({
     u_id: {
         type: String
     },
+    shop_checked: {
+        type: Boolean,
+        default: true
+    },
     shop: {
         type: {
             shop_id: {
@@ -33,6 +37,10 @@ var CartSchema = new Schema({
                 },
                 name: {
                     type: String
+                },
+                item_checked: {
+                    type: Boolean,
+                    default: true
                 },
                 product_status: {
                     type: String,
