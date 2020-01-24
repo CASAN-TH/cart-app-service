@@ -131,6 +131,56 @@ exports.read = function (req, res) {
     });
 };
 
+exports.calCartTotal = function (req, res, next) {
+    if (req.data.length > 0) {
+        var shopDatas = req.data;
+        var totalPrice = 0;
+        var installmentPrice = 0;
+        var installmentPeriod;
+        var currency;
+        var amountProduct = 0;
+
+        for (let i = 0; i < shopDatas.length; i++) {
+            const shopData = shopDatas[i];
+            for (let j = 0; j < shopData.items.length; j++) {
+                const item = shopData.items[j];
+                // console.log(item)
+                if (item.sale_avaliable) {
+                    totalPrice += item.sale_price.price;
+                } else {
+                    totalPrice += item.regular_price.price;
+                }
+                installmentPrice += item.installment.price;
+                installmentPeriod = item.installment.period;
+                currency = item.regular_price.currency;
+                amountProduct += item.amount_product
+            };
+        };
+
+        var totalData = {};
+        totalData.totalprice = totalPrice;
+        totalData.totalprice_text = currency + totalPrice.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+        totalData.total_installmentPrice = installmentPrice;
+        totalData.total_installmentPrice_text = currency + installmentPrice.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+        totalData.installmentPeriod = installmentPeriod;
+        totalData.currency = currency;
+        totalData.amountProduct = amountProduct;
+        // console.log(totalData)
+        req.data = totalData;
+        next();
+    } else {
+        req.data = {}
+        next();
+    };
+};
+
+exports.returnData = function (req, res) {
+    res.jsonp({
+        status: 200,
+        data: req.data
+    });
+}
+
 exports.update = function (req, res) {
     var updCart = _.extend(req.data, req.body);
     updCart.updated = new Date();

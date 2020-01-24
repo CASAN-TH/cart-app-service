@@ -610,6 +610,205 @@ describe('Cart CRUD routes tests', function () {
             });
     });
 
+    it('should be cart not get totalcarts', function (done) {
+        request(app)
+            .get('/api/cartstotal')
+            .set('Authorization', 'Bearer ' + token)
+            .expect(200)
+            .end(function (err, res) {
+                if (err) {
+                    return done(err);
+                }
+                var resp = res.body;
+                // console.log(resp.data)
+                done();
+            });
+    });
+
+    it('should be cart get totalcarts', function (done) {
+
+        request(app)
+            .post('/api/carts')
+            .set('Authorization', 'Bearer ' + token)
+            .send(mockup)
+            .expect(200)
+            .end(function (err, res) {
+                if (err) {
+                    return done(err);
+                }
+                var resp = res.body;
+
+                var mockup1 = {
+                    "u_id": "0992436806",
+                    "shop": {
+                        "shop_id": "shop001",
+                        "shop_name": "shopTest",
+                        "shop_image": "image.jpg"
+                    },
+                    "items": [
+                        {
+                            "product_id": "Product002",
+                            "sku": "sku",
+                            "images": ["https://res.cloudinary.com/hml20oe33/image/upload/v1576751856/catalog/2_pfwgiy.jpg"],
+                            "name": "Vivo v13 Pro Crystal Sky RAM 8 GB ROM 128 GB",
+                            "option1": "green",
+                            "option2": "32GB",
+                            "sale_price_percentage": 50,
+                            "sale_avaliable": true,
+                            "sale_price": {
+                                "price": 8000,
+                                "currency": "฿"
+                            },
+                            "sale_price_text": "฿8,000",
+                            "regular_price": {
+                                "price": 12000,
+                                "currency": "฿"
+                            },
+                            "regular_price_text": "฿12,000",
+                            "down_payment": {
+                                "price": 1000,
+                                "currency": "฿"
+                            },
+                            "down_payment_text": "฿1,000",
+                            "installment": {
+                                "price": 222.222222222223,
+                                "period": 18,
+                                "currency": "฿"
+                            },
+                            "installment_price_text": "฿222.22",
+                            "amount_product": 2,
+                            "shipping": {
+                                "shipping_name": "kerry",
+                                "shipping_fee": 50,
+                                "shipping_currency": "฿"
+                            },
+                            "promotions": [
+                                {
+                                    "gift_type": "ของแถม",
+                                    "gift_name": "หูฟังไร้สาย",
+                                    "gift_amount": 1
+                                }
+                            ],
+                            "down_payment_lists": [20, 30, 40, 50],
+                            "periods_lists": [3, 6, 9, 12, 18]
+                        }
+                    ]
+                };
+                request(app)
+                    .post('/api/carts')
+                    .set('Authorization', 'Bearer ' + token)
+                    .send(mockup1)
+                    .expect(200)
+                    .end(function (err, res) {
+                        if (err) {
+                            return done(err);
+                        }
+                        var resp = res.body;
+
+                        var mockup2 = {
+                            "u_id": "0992436806",
+                            "shop": {
+                                "shop_id": "shop002",
+                                "shop_name": "shopTest",
+                                "shop_image": "image.jpg"
+                            },
+                            "items": [
+                                {
+                                    "product_id": "Product001",
+                                    "sku": "sku",
+                                    "images": ["https://res.cloudinary.com/hml20oe33/image/upload/v1576751856/catalog/2_pfwgiy.jpg"],
+                                    "name": "Vivo v13 Pro Crystal Sky RAM 8 GB ROM 128 GB",
+                                    "option1": "green",
+                                    "option2": "32GB",
+                                    "sale_price_percentage": 50,
+                                    "sale_avaliable": false,
+                                    "sale_price": {
+                                        "price": 7000,
+                                        "currency": "฿"
+                                    },
+                                    "sale_price_text": "฿7,000",
+                                    "regular_price": {
+                                        "price": 9000,
+                                        "currency": "฿"
+                                    },
+                                    "regular_price_text": "฿9,000",
+                                    "down_payment": {
+                                        "price": 1000,
+                                        "currency": "฿"
+                                    },
+                                    "down_payment_text": "฿1,000",
+                                    "installment": {
+                                        "price": 222.222222222223,
+                                        "period": 18,
+                                        "currency": "฿"
+                                    },
+                                    "installment_price_text": "฿222.22",
+                                    "amount_product": 2,
+                                    "shipping": {
+                                        "shipping_name": "kerry",
+                                        "shipping_fee": 50,
+                                        "shipping_currency": "฿"
+                                    },
+                                    "promotions": [
+                                        {
+                                            "gift_type": "ของแถม",
+                                            "gift_name": "หูฟังไร้สาย",
+                                            "gift_amount": 1
+                                        }
+                                    ],
+                                    "down_payment_lists": [20, 30, 40, 50],
+                                    "periods_lists": [3, 6, 9, 12, 18]
+                                }
+                            ]
+                        };
+                        request(app)
+                            .post('/api/carts')
+                            .set('Authorization', 'Bearer ' + token)
+                            .send(mockup2)
+                            .expect(200)
+                            .end(function (err, res) {
+                                if (err) {
+                                    return done(err);
+                                }
+                                var resp = res.body;
+
+                                request(app)
+                                    .get('/api/cartsbyuser')
+                                    .set('Authorization', 'Bearer ' + token)
+                                    .expect(200)
+                                    .end(function (err, res) {
+                                        if (err) {
+                                            return done(err);
+                                        }
+                                        var resp = res.body;
+                                        assert.equal(resp.data.length, 2);
+                                        assert.equal(resp.data[0].items.length, 2);
+                                        assert.equal(resp.data[1].items.length, 1);
+
+                                        request(app)
+                                            .get('/api/cartstotal')
+                                            .set('Authorization', 'Bearer ' + token)
+                                            .expect(200)
+                                            .end(function (err, res) {
+                                                if (err) {
+                                                    return done(err);
+                                                }
+                                                var resp = res.body;
+                                                assert.equal(resp.data.totalprice, 22000);
+                                                assert.equal(resp.data.totalprice_text, "฿22,000.00");
+                                                assert.equal(resp.data.total_installmentPrice, 666.666666666669);
+                                                assert.equal(resp.data.total_installmentPrice_text, "฿666.67");
+                                                assert.equal(resp.data.installmentPeriod, 18);
+                                                assert.equal(resp.data.currency, "฿");
+                                                assert.equal(resp.data.amountProduct, 6);
+                                                done();
+                                            });
+                                    });
+                            });
+                    });
+            });
+    });
+
     it('should be cart post new shop and add product', function (done) {
 
         request(app)

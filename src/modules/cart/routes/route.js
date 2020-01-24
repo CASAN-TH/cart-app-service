@@ -10,7 +10,7 @@ module.exports = function (app) {
         .post(
             controller.mixData,
             controller.create
-            );
+        );
 
     app.route(urlWithParam).all(policy.isAllowed)
         .get(controller.read)
@@ -21,7 +21,14 @@ module.exports = function (app) {
         .get(
             controller.findByUser,
             controller.read
-        )
+        );
+
+    app.route('/api/cartstotal')
+        .get(
+            controller.findByUser,
+            controller.calCartTotal,
+            controller.returnData
+        );
 
     app.param('cartId', controller.getByID);
 
