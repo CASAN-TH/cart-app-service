@@ -676,7 +676,7 @@ describe('Cart CRUD routes tests', function () {
                                 "currency": "฿"
                             },
                             "installment_price_text": "฿222.22",
-                            "amount_product": 2,
+                            "amount_product": 1,
                             "shipping": {
                                 "shipping_name": "kerry",
                                 "shipping_fee": 50,
@@ -794,13 +794,13 @@ describe('Cart CRUD routes tests', function () {
                                                     return done(err);
                                                 }
                                                 var resp = res.body;
-                                                assert.equal(resp.data.totalprice, 22000);
-                                                assert.equal(resp.data.totalprice_text, "฿22,000.00");
-                                                assert.equal(resp.data.total_installmentPrice, 666.666666666669);
-                                                assert.equal(resp.data.total_installmentPrice_text, "฿666.67");
+                                                assert.equal(resp.data.totalprice, 36000);
+                                                assert.equal(resp.data.totalprice_text, "฿36,000.00");
+                                                assert.equal(resp.data.total_installmentPrice, 1111.111111111115);
+                                                assert.equal(resp.data.total_installmentPrice_text, "฿1,111.11");
                                                 assert.equal(resp.data.installmentPeriod, 18);
                                                 assert.equal(resp.data.currency, "฿");
-                                                assert.equal(resp.data.amountProduct, 6);
+                                                assert.equal(resp.data.amountProduct, 5);
                                                 done();
                                             });
                                     });

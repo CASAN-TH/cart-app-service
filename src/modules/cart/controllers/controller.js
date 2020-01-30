@@ -146,11 +146,11 @@ exports.calCartTotal = function (req, res, next) {
                 const item = shopData.items[j];
                 // console.log(item)
                 if (item.sale_avaliable) {
-                    totalPrice += item.sale_price.price;
+                    totalPrice += (item.sale_price.price * item.amount_product);
                 } else {
-                    totalPrice += item.regular_price.price;
+                    totalPrice += (item.regular_price.price * item.amount_product);
                 }
-                installmentPrice += item.installment.price;
+                installmentPrice += (item.installment.price * item.amount_product);
                 installmentPeriod = item.installment.period;
                 currency = item.regular_price.currency;
                 amountProduct += item.amount_product
